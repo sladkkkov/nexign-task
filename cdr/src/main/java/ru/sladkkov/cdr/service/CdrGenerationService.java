@@ -2,8 +2,6 @@ package ru.sladkkov.cdr.service;
 
 import com.github.javafaker.Faker;
 import lombok.RequiredArgsConstructor;
-import org.springframework.kafka.core.KafkaTemplate;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import ru.sladkkov.cdr.dto.CallDataRecordDto;
 import ru.sladkkov.cdr.enums.TypeCall;
@@ -16,21 +14,15 @@ import java.util.concurrent.ThreadLocalRandom;
 public class CdrGenerationService {
 
     private final Faker faker;
-    private final KafkaTemplate<String, CallDataRecordDto> kafkaTemplate;
 
     //TODO Сейчас dateAndTimeStartCall - timeNow будешь расхождение с End Call на время вызова методов, пофиксить.
-    @Scheduled(fixedDelay = 10000)
-    public void generateRandomCdr() {
-
-        LocalDateTime timeNow = LocalDateTime.now();
-        CallDataRecordDto callDataRecordDto = CallDataRecordDto.builder()
+    public CallDataRecordDto generateRandomCdr() {
+        return CallDataRecordDto.builder()
                 .typeCall(randomTypeCall())
                 .clientNumber(randomClientNumber())
-                .dateAndTimeStartCall(timeNow)
+                .dateAndTimeStartCall(LocalDateTime.now())
                 .dateAndTimeEndCall(randomSecondLocalDate())
                 .build();
-
-        kafkaTemplate.send("randomCdr", callDataRecordDto);
     }
 
     private TypeCall randomTypeCall() {
