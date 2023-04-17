@@ -1,4 +1,4 @@
-package ru.sladkkov.cdr.config;
+package ru.sladkkov.brt.config;
 
 import org.apache.kafka.clients.admin.NewTopic;
 import org.apache.kafka.clients.producer.ProducerConfig;
@@ -10,16 +10,15 @@ import org.springframework.kafka.core.DefaultKafkaProducerFactory;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.core.ProducerFactory;
 import org.springframework.kafka.support.serializer.JsonSerializer;
-import ru.sladkkov.dtoshare.dto.CallDataRecordDto;
+import ru.sladkkov.dtoshare.dto.CallDataRecordPlusDto;
 
 import java.util.HashMap;
 import java.util.Map;
 
 @Configuration
 public class KafkaConfig {
-
     @Bean
-    public ProducerFactory<String, CallDataRecordDto> producerFactory() {
+    public ProducerFactory<String, CallDataRecordPlusDto> producerFactory() {
 
         Map<String, Object> config = new HashMap<>();
 
@@ -31,7 +30,7 @@ public class KafkaConfig {
     }
 
     @Bean
-    public KafkaTemplate<String, CallDataRecordDto> kafkaTemplate() {
+    public KafkaTemplate<String, CallDataRecordPlusDto> kafkaTemplate() {
         return new KafkaTemplate<>(producerFactory());
     }
 
@@ -39,7 +38,7 @@ public class KafkaConfig {
     @Bean
     public NewTopic topic() {
         return TopicBuilder
-                .name("randomCdr")
+                .name("hrs-topic")
                 .partitions(10)
                 .replicas(1)
                 .build();

@@ -1,7 +1,6 @@
-package ru.sladkkov.cdr.enums;
+package ru.sladkkov.dtoshare.enums;
 
-
-import ru.sladkkov.cdr.exception.TariffConvertationException;
+import ru.sladkkov.dtoshare.exception.TariffConvertationException;
 
 import java.util.List;
 

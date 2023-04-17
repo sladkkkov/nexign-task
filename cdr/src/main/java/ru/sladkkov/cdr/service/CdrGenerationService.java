@@ -3,8 +3,8 @@ package ru.sladkkov.cdr.service;
 import com.github.javafaker.Faker;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import ru.sladkkov.cdr.dto.CallDataRecordDto;
-import ru.sladkkov.cdr.enums.TypeCall;
+import ru.sladkkov.dtoshare.dto.CallDataRecordDto;
+import ru.sladkkov.dtoshare.enums.TypeCall;
 
 import java.time.LocalDateTime;
 import java.util.concurrent.ThreadLocalRandom;
@@ -19,7 +19,7 @@ public class CdrGenerationService {
     public CallDataRecordDto generateRandomCdr() {
         return CallDataRecordDto.builder()
                 .typeCall(randomTypeCall())
-                .clientNumber(randomClientNumber())
+                .abonentNumber(randomClientNumber())
                 .dateAndTimeStartCall(LocalDateTime.now())
                 .dateAndTimeEndCall(randomSecondLocalDate())
                 .build();

@@ -1,4 +1,4 @@
-package ru.sladkkov.cdr.enums;
+package ru.sladkkov.dtoshare.enums;
 
 import java.util.List;
 

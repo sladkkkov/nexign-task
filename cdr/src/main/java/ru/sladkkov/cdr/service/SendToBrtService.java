@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
-import ru.sladkkov.cdr.dto.CallDataRecordDto;
+import ru.sladkkov.dtoshare.dto.CallDataRecordDto;
 
 @Service
 @RequiredArgsConstructor
