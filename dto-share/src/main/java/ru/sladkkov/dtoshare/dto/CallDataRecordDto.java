@@ -1,10 +1,10 @@
-package ru.sladkkov.cdr.dto;
+package ru.sladkkov.dtoshare.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import ru.sladkkov.cdr.enums.TypeCall;
+import ru.sladkkov.dtoshare.enums.TypeCall;
 
 import java.time.LocalDateTime;
 
@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 @Builder
 public class CallDataRecordDto {
     private TypeCall typeCall;
-    private String clientNumber;
+    private String abonentNumber;
     private LocalDateTime dateAndTimeStartCall;
     private LocalDateTime dateAndTimeEndCall;
 }
