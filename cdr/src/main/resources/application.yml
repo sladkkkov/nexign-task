@@ -1,6 +1,6 @@
 spring:
   application:
-    name: crm
+    name: cdr
 
   datasource:
     driver-class-name: org.postgresql.Driver
@@ -9,16 +9,29 @@ spring:
     username: postgres
     password: postgres
 
-  jpa:
-    show-sql: true
-    hibernate:
-      ddl-auto: create
-
-
 eureka:
   client:
     serviceUrl:
       defaultZone: http://localhost:8761/eureka
 
 server:
-  port: 7653
+  port: 7652
+
+call:
+  duration:
+    max: 3600
+
+cdr:
+  generate:
+    path: cdr.txt
+    count:
+      abonent: 50
+      cdr: 50
+    balance:
+      range: 500
+
+randommer:
+  api:
+    key: 6fcfa6533e004c9ebbe31f3ca4d44de4
+    country_code: RU
+    count: 1

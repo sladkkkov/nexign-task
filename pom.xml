@@ -29,7 +29,7 @@
         <module>cdr</module>
         <module>crm</module>
         <module>hrs</module>
-        <module>dto-share</module>
+        <module>common</module>
     </modules>
 
     <dependencyManagement>
