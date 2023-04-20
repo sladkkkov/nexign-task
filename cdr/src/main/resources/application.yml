@@ -9,8 +9,6 @@ spring:
     username: postgres
     password: postgres
 
-
-
 eureka:
   client:
     serviceUrl:
@@ -18,3 +16,7 @@ eureka:
 
 server:
   port: 7652
+
+call:
+  duration:
+    max: 3600

@@ -3,7 +3,6 @@ package ru.sladkkov.brt.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import ru.sladkkov.common.dto.abonent.AbonentDto;
 import ru.sladkkov.common.dto.abonent.mapper.AbonentMapper;
 import ru.sladkkov.common.exception.AbonentNotFoundException;
 import ru.sladkkov.common.model.Abonent;
@@ -16,7 +15,7 @@ public class AbonentService {
     private final AbonentMapper abonentMapper;
     private final AbonentRepository abonentRepository;
 
-    public AbonentDto findAbonentByTelephoneNumber(String telephoneNumber) {
+    public ru.sladkkov.common.dto.abonent.AbonentDto findAbonentByTelephoneNumber(String telephoneNumber) {
 
         Abonent abonent = abonentRepository.findAbonentByTelephoneNumber(telephoneNumber)
                 .orElseThrow(() -> new AbonentNotFoundException("Пользователя с таким телефоном не найдено"));
