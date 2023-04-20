@@ -4,18 +4,19 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
-import ru.sladkkov.dtoshare.dto.CallDataRecordDto;
+import ru.sladkkov.cdr.service.impl.CdrGenerationServiceImpl;
+import ru.sladkkov.common.dto.CallDataRecordDto;
 
 @Service
 @RequiredArgsConstructor
 public class SendToBrtService {
 
     private final KafkaTemplate<String, CallDataRecordDto> kafkaTemplate;
-    private final CdrGenerationService cdrGenerationService;
+    private final CdrGenerationServiceImpl cdrGenerationServiceImpl;
 
     @Scheduled(fixedDelay = 1000000)
     public void sendToBrt() {
 
-        kafkaTemplate.send("randomCdr", cdrGenerationService.generateRandomCdr());
+        kafkaTemplate.send("randomCdr", cdrGenerationServiceImpl.generateRandomCdr());
     }
 }

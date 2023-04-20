@@ -2,6 +2,19 @@ spring:
   application:
     name: crm
 
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    name: nexign
+    url: jdbc:postgresql://localhost:5434/nexign
+    username: postgres
+    password: postgres
+
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: create
+
+
 eureka:
   client:
     serviceUrl:

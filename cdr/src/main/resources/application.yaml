@@ -2,6 +2,15 @@ spring:
   application:
     name: cdr
 
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    name: nexign
+    url: jdbc:postgresql://localhost:5434/nexign
+    username: postgres
+    password: postgres
+
+
+
 eureka:
   client:
     serviceUrl:
