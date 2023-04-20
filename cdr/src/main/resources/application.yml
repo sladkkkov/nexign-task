@@ -20,3 +20,18 @@ server:
 call:
   duration:
     max: 3600
+
+cdr:
+  generate:
+    path: cdr.txt
+    count:
+      abonent: 50
+      cdr: 50
+    balance:
+      range: 500
+
+randommer:
+  api:
+    key: 6fcfa6533e004c9ebbe31f3ca4d44de4
+    country_code: RU
+    count: 1

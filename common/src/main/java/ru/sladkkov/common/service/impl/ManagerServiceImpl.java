@@ -1,4 +1,4 @@
-package ru.sladkkov.crm.service.impl;
+package ru.sladkkov.common.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -6,7 +6,7 @@ import ru.sladkkov.common.dto.ChangeTariffDto;
 import ru.sladkkov.common.exception.AbonentNotFoundException;
 import ru.sladkkov.common.model.Abonent;
 import ru.sladkkov.common.repository.AbonentRepository;
-import ru.sladkkov.crm.service.ManagerService;
+import ru.sladkkov.common.service.ManagerService;
 
 
 @Service

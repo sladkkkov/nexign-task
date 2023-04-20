@@ -1,14 +1,14 @@
 package ru.sladkkov.cdr.config;
 
-import com.github.javafaker.Faker;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.client.RestTemplate;
 
 @Configuration
-public class FakerConfig {
+public class RestTemplateConfig {
 
     @Bean
-    public Faker faker() {
-        return new Faker();
+    public RestTemplate faker() {
+        return new RestTemplate();
     }
 }

@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 import ru.sladkkov.common.dto.ChangeTariffDto;
 import ru.sladkkov.common.dto.abonent.AbonentDto;
 import ru.sladkkov.common.dto.abonent.mapper.AbonentMapper;
-import ru.sladkkov.crm.service.impl.ManagerServiceImpl;
+import ru.sladkkov.common.service.impl.ManagerServiceImpl;
 
 @RestController
 @RequestMapping("/v1/manager")

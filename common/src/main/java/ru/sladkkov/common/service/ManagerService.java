@@ -1,4 +1,4 @@
-package ru.sladkkov.crm.service;
+package ru.sladkkov.common.service;
 
 import org.springframework.stereotype.Service;
 import ru.sladkkov.common.dto.ChangeTariffDto;
