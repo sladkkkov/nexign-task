@@ -13,6 +13,8 @@ spring:
     show-sql: true
     hibernate:
       ddl-auto: create
+  liquibase:
+    enabled: false
 
 
 eureka:

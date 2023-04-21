@@ -8,7 +8,7 @@ import ru.sladkkov.crm.dto.payment.mapper.PaymentMapper;
 import ru.sladkkov.crm.service.impl.AbonentServiceImpl;
 
 @RestController
-@RequestMapping("/v1/abonent")
+@RequestMapping("/api/v1/abonent")
 @RequiredArgsConstructor
 public class AbonentController {
 

@@ -19,14 +19,14 @@ import java.io.IOException;
 @Slf4j
 class MainGeneratorService {
 
-    private final CdrFileWriter cdrFileWriter;
-    private final ManagerService managerService;
-    private final AbonentGeneratorService abonentGeneratorService;
-    private final CdrGeneratorService cdrGeneratorService;
     @Value("${cdr.generate.count.cdr}")
     private int countCdr;
     @Value("${cdr.generate.count.abonent}")
     private int countAbonent;
+    private final CdrFileWriter cdrFileWriter;
+    private final ManagerService managerService;
+    private final AbonentGeneratorService abonentGeneratorService;
+    private final CdrGeneratorService cdrGeneratorService;
 
     @EventListener(ApplicationReadyEvent.class)
     public void generateAbonents() {

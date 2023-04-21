@@ -21,7 +21,7 @@ public class AbonentServiceImpl implements AbonentService {
     @Transactional
     public Payment pay(Payment payment) {
 
-        var abonent = abonentRepository.findAbonentByTelephoneNumber(payment.getNumberPhone()).orElseThrow(() ->
+        var abonent = abonentRepository.findAbonentByAbonentNumber(payment.getNumberPhone()).orElseThrow(() ->
                 new AbonentNotFoundException("Абонент с таким номером телефона не найден"));
 
         abonent.setBalance(abonent.getBalance().add(payment.getMoney()));

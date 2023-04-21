@@ -9,6 +9,11 @@ spring:
     username: postgres
     password: postgres
 
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+
 eureka:
   client:
     serviceUrl:
@@ -25,7 +30,7 @@ cdr:
   generate:
     path: cdr.txt
     count:
-      abonent: 50
+      abonent: 10
       cdr: 50
     balance:
       range: 500
@@ -34,4 +39,4 @@ randommer:
   api:
     key: 6fcfa6533e004c9ebbe31f3ca4d44de4
     country_code: RU
-    count: 1
+    count: 10

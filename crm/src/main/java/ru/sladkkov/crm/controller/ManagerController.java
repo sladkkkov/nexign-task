@@ -12,7 +12,7 @@ import ru.sladkkov.common.dto.abonent.mapper.AbonentMapper;
 import ru.sladkkov.common.service.impl.ManagerServiceImpl;
 
 @RestController
-@RequestMapping("/v1/manager")
+@RequestMapping("/api/v1/manager")
 @RequiredArgsConstructor
 public class ManagerController {
 
@@ -26,6 +26,6 @@ public class ManagerController {
 
     @PostMapping("/abonent")
     public ResponseEntity<AbonentDto> saveAbonent(AbonentDto abonentDto) {
-        return ResponseEntity.ok(abonentMapper.toDto(managerServiceImpl.createAbonent(abonentMapper.toModel(abonentDto))));
+        return ResponseEntity.ok(abonentMapper.toDto(managerServiceImpl.createAbonent(abonentMapper.toEntity(abonentDto))));
     }
 }

@@ -8,11 +8,8 @@ spring:
     url: jdbc:postgresql://localhost:5434/nexign
     username: postgres
     password: postgres
-
-  jpa:
-    show-sql: true
-    hibernate:
-      ddl-auto: create
+  liquibase:
+    enabled: false
 
 eureka:
   client:
@@ -21,3 +18,8 @@ eureka:
 
 server:
   port: 7654
+
+cdr:
+  generate:
+    path: cdr.txt
+    plus-cdr-path: cdr-plus.txt
