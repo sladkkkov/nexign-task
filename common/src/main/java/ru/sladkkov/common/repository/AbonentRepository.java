@@ -10,5 +10,5 @@ import java.util.Optional;
 @Repository
 public interface AbonentRepository extends JpaRepository<Abonent, Long> {
 
-    Optional<Abonent> findAbonentByAbonentNumber(String abonentNumber);
+    Optional<Abonent> findByAbonentNumber(String abonentNumber);
 }

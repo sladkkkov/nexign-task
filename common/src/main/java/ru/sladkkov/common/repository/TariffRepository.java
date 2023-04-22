@@ -5,5 +5,6 @@ import org.springframework.stereotype.Repository;
 import ru.sladkkov.common.model.Tariff;
 
 @Repository
-public interface TariffRepository extends JpaRepository<Tariff, Long> {
+public interface TariffRepository extends JpaRepository<Tariff, String> {
+
 }

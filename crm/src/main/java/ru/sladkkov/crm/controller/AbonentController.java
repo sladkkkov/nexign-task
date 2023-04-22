@@ -3,8 +3,8 @@ package ru.sladkkov.crm.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ru.sladkkov.crm.dto.payment.PaymentDto;
-import ru.sladkkov.crm.dto.payment.mapper.PaymentMapper;
+import ru.sladkkov.common.dto.PaymentDto;
+import ru.sladkkov.crm.service.ReportService;
 import ru.sladkkov.crm.service.impl.AbonentServiceImpl;
 
 @RestController
@@ -13,16 +13,16 @@ import ru.sladkkov.crm.service.impl.AbonentServiceImpl;
 public class AbonentController {
 
     private final AbonentServiceImpl abonentServiceImpl;
-    private final PaymentMapper paymentMapper;
+    private final ReportService reportService;
 
-    @GetMapping("report/{numberPhone}")
-    public void getReport(@PathVariable String numberPhone) {
-
+    @GetMapping("report/{abonentNumber}")
+    public void getReport(@PathVariable String abonentNumber) {
+        reportService.getReportByAbonentNumber(abonentNumber);
     }
 
     @PatchMapping("/pay")
-    public ResponseEntity<PaymentDto> pay(PaymentDto paymentDto) {
-        return ResponseEntity.ok(paymentMapper.toDto(abonentServiceImpl.pay(paymentMapper.toModel(paymentDto))));
+    public ResponseEntity<PaymentDto> pay(@RequestBody PaymentDto paymentDto) {
+        return ResponseEntity.ok(abonentServiceImpl.pay(paymentDto));
     }
 }
 

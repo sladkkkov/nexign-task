@@ -9,7 +9,7 @@ import org.springframework.context.annotation.ComponentScan;
 
 @SpringBootApplication
 @EntityScan("ru.sladkkov.common.model")
-@ComponentScan(basePackages = "ru.sladkkov.common")
+@ComponentScan(basePackages = {"ru.sladkkov.common", "ru.sladkkov.crm"})
 public class CrmApplication {
 
     public static void main(String[] args) {

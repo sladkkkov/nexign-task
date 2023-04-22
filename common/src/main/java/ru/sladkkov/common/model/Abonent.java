@@ -24,6 +24,7 @@ public class Abonent {
     @JoinColumn(name = "tariff_id")
     private Tariff tariff;
 
+
     private BigDecimal balance;
 
     private Integer countMinuteByTariffPeriod;

@@ -1,12 +1,12 @@
 package ru.sladkkov.hrs.service;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.boot.context.event.ApplicationReadyEvent;
-import org.springframework.context.event.EventListener;
+import org.springframework.kafka.annotation.KafkaListener;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
+import ru.sladkkov.common.dto.CallDataRecordDto;
 import ru.sladkkov.common.dto.CallDataRecordPlusDto;
-import ru.sladkkov.common.enums.TypeCall;
+import ru.sladkkov.common.dto.CallInfoDto;
 import ru.sladkkov.common.exception.AbonentNotFoundException;
 import ru.sladkkov.common.repository.AbonentRepository;
 
@@ -17,25 +17,18 @@ import java.time.temporal.ChronoUnit;
 
 @Service
 @RequiredArgsConstructor
-@Slf4j
 public class BillingService {
+    private final KafkaTemplate<String, CallInfoDto> kafkaTemplate;
     private final AbonentRepository abonentRepository;
     private final DataParserService dataParserService;
 
-    @EventListener(ApplicationReadyEvent.class)
-    public void calculateAllCalls() {
-        for (CallDataRecordPlusDto callDataRecordPlusDto : dataParserService.getCallDataRecordDtoFromFile()) {
-            var bigDecimal = calculatePriceCall(callDataRecordPlusDto);
-            log.info(bigDecimal + callDataRecordPlusDto.toString());
-        }
-    }
-
+    @KafkaListener(groupId = "hrs-topic-1", topics = "hrs-topic")
     public BigDecimal calculatePriceCall(CallDataRecordPlusDto callDataRecordPlusDto) {
         var tariff = callDataRecordPlusDto.getTariff();
         var callDataRecordDto = callDataRecordPlusDto.getCallDataRecordDto();
 
         var abonentByTelephoneNumber = abonentRepository
-                .findAbonentByAbonentNumber(callDataRecordDto.getAbonentNumber())
+                .findByAbonentNumber(callDataRecordDto.getAbonentNumber())
                 .orElseThrow(() -> new AbonentNotFoundException("Такого абонента не существует"));
 
         long countMinuteByTariffPeriod = abonentByTelephoneNumber.getCountMinuteByTariffPeriod();
@@ -46,17 +39,20 @@ public class BillingService {
         countMinuteByTariffPeriod += totalDuration.toMinutes();
 
 
-        if (tariff.getIncomingFree() && callDataRecordDto.getTypeCall() == TypeCall.INCOMING) {
+        if (Boolean.TRUE.equals(tariff.getIncomingFree()) && callDataRecordDto.getTypeCall().getCode().equals("02")) {
+            sendResult(callDataRecordDto, totalDuration, BigDecimal.ZERO);
             return BigDecimal.ZERO;
         }
 
-        if (tariff.getOutgoingFree() && callDataRecordDto.getTypeCall() == TypeCall.OUTGOING) {
+        if (Boolean.TRUE.equals(tariff.getOutgoingFree()) && callDataRecordDto.getTypeCall().getCode().equals("01")) {
+            sendResult(callDataRecordDto, totalDuration, BigDecimal.ZERO);
             return BigDecimal.ZERO;
         }
 
         if (tariff.getFreeMinuteForFixedPrice() == 0 && tariff.getActionMinute() == 0) {
-
-            return BigDecimal.valueOf(totalDuration.toMinutes()).multiply(tariff.getPriceForMinute());
+            var cost = BigDecimal.valueOf(totalDuration.toMinutes()).multiply(tariff.getPriceForMinute());
+            sendResult(callDataRecordDto, totalDuration, cost);
+            return cost;
         }
 
         //TODO сделать звонки внутри сети
@@ -64,8 +60,10 @@ public class BillingService {
         if (totalDuration.toMinutes() > tariff.getFreeMinuteForFixedPrice()) {
 
             var val = tariff.getFreeMinuteForFixedPrice() - (countMinuteByTariffPeriod - totalDuration.toMinutes());
+            var cost = tariff.getPriceForMinute().multiply(BigDecimal.valueOf(totalDuration.toMinutes() - val));
 
-            return tariff.getPriceForMinute().multiply(BigDecimal.valueOf(totalDuration.toMinutes() - val));
+            sendResult(callDataRecordDto, totalDuration, cost);
+            return cost;
         }
 
         var val = tariff.getActionMinute() - (countMinuteByTariffPeriod - totalDuration.toMinutes());
@@ -73,16 +71,41 @@ public class BillingService {
         if (totalDuration.toMinutes() > tariff.getActionMinute()) {
 
             if (val > 0) {
-                return tariff.getActionPrice()
+
+                var cost = tariff.getActionPrice()
                         .multiply(BigDecimal.valueOf(val))
                         .add(tariff.getPriceForMinute().multiply(BigDecimal.valueOf(totalDuration.toMinutes() - val)));
 
-            }
+                sendResult(callDataRecordDto, totalDuration, cost);
+                return cost;
 
-            return tariff.getPriceForMinute().multiply(BigDecimal.valueOf(totalDuration.toMinutes()));
+            }
+            var cost = tariff.getPriceForMinute().multiply(BigDecimal.valueOf(totalDuration.toMinutes()));
+            sendResult(callDataRecordDto, totalDuration, cost);
+            return cost;
         }
 
         throw new UnsupportedOperationException();
+    }
+
+    private void sendResult(CallDataRecordDto callDataRecordDto, Duration totalDuration, BigDecimal cost) {
+
+        String timeInHHMMSS = getDurationToStringFormat(totalDuration);
+
+        kafkaTemplate.send("brt-db-topic", CallInfoDto.builder()
+                .typeCall(callDataRecordDto.getTypeCall())
+                .cost(cost)
+                .startTime(callDataRecordDto.getDateAndTimeStartCall())
+                .endTime(callDataRecordDto.getDateAndTimeEndCall())
+                .duration(timeInHHMMSS)
+                .build());
+    }
+
+    private String getDurationToStringFormat(Duration totalDuration) {
+        long hh = totalDuration.toHours();
+        long mm = totalDuration.toMinutesPart();
+        long ss = totalDuration.toSecondsPart();
+        return String.format("%02d:%02d:%02d", hh, mm, ss);
     }
 
     private Duration calculateDurationCall(LocalDateTime dateAndTimeStartCall, LocalDateTime dateAndTimeEndCall) {

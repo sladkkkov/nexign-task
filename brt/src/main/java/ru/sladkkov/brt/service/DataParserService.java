@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import ru.sladkkov.brt.exception.ParserException;
 import ru.sladkkov.common.dto.CallDataRecordDto;
-import ru.sladkkov.common.enums.TypeCall;
+import ru.sladkkov.common.dto.TypeCallDto;
 import ru.sladkkov.common.exception.FileCorruptedException;
 
 import java.io.IOException;
@@ -38,12 +38,15 @@ public class DataParserService {
                     throw new ParserException("Parser exception for cdrs");
                 }
 
-                callDataRecordDtoList.add(new CallDataRecordDto(
-                        TypeCall.fromNumericNameOfType(cdr[0]),
-                        cdr[1],
-                        LocalDateTime.parse(cdr[2], dateTimeFormatter),
-                        LocalDateTime.parse(cdr[3], dateTimeFormatter))
-                );
+                callDataRecordDtoList.add(CallDataRecordDto.builder()
+                        .typeCall(TypeCallDto
+                                .builder()
+                                .code(cdr[0])
+                                .build())
+                        .abonentNumber(cdr[1])
+                        .dateAndTimeStartCall(LocalDateTime.parse(cdr[2], dateTimeFormatter))
+                        .dateAndTimeEndCall(LocalDateTime.parse(cdr[3], dateTimeFormatter))
+                        .build());
             });
 
         } catch (IOException e) {

@@ -4,8 +4,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import ru.sladkkov.common.dto.CallDataRecordDto;
 import ru.sladkkov.common.dto.CallDataRecordPlusDto;
+import ru.sladkkov.common.dto.TypeCallDto;
 import ru.sladkkov.common.dto.tariff.TariffDto;
-import ru.sladkkov.common.enums.TypeCall;
 import ru.sladkkov.common.exception.FileCorruptedException;
 
 import java.io.IOException;
@@ -42,7 +42,7 @@ public class DataParserService {
 
                 callDataRecordDtoList.add(new CallDataRecordPlusDto(
                         CallDataRecordDto.builder()
-                                .typeCall(TypeCall.fromNumericNameOfType(cdr[0]))
+                                .typeCall(TypeCallDto.builder().code(cdr[0]).build())
                                 .abonentNumber(cdr[1])
                                 .dateAndTimeStartCall(LocalDateTime.parse(cdr[2], dateTimeFormatter))
                                 .dateAndTimeEndCall(LocalDateTime.parse(cdr[3], dateTimeFormatter))

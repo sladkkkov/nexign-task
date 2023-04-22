@@ -5,15 +5,17 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 @Builder
-public class CallDataRecordDto {
+public class CallInfoDto {
     private TypeCallDto typeCall;
-    private String abonentNumber;
-    private LocalDateTime dateAndTimeStartCall;
-    private LocalDateTime dateAndTimeEndCall;
+    private LocalDateTime startTime;
+    private LocalDateTime endTime;
+    private String duration;
+    private BigDecimal cost;
 }

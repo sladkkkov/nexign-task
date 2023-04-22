@@ -2,10 +2,7 @@ package ru.sladkkov.crm.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import ru.sladkkov.common.dto.ChangeTariffDto;
 import ru.sladkkov.common.dto.abonent.AbonentDto;
 import ru.sladkkov.common.dto.abonent.mapper.AbonentMapper;
@@ -20,7 +17,7 @@ public class ManagerController {
     private final AbonentMapper abonentMapper;
 
     @PatchMapping("/changeTariff")
-    public ResponseEntity<ChangeTariffDto> changeTariff(ChangeTariffDto changeTariffDto) {
+    public ResponseEntity<ChangeTariffDto> changeTariff(@RequestBody ChangeTariffDto changeTariffDto) {
         return ResponseEntity.ok(managerServiceImpl.changeAbonentTariff(changeTariffDto));
     }
 

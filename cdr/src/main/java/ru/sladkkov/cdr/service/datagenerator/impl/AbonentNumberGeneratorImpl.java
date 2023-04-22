@@ -33,6 +33,7 @@ public class AbonentNumberGeneratorImpl implements AbonentNumberGenerator {
 
     private static List<String> formatResponse(ResponseEntity<String> responseEntity) {
         var body = responseEntity.getBody();
+
         if (body == null) {
             throw new NullPointerException("Body is null");
         }
@@ -50,6 +51,7 @@ public class AbonentNumberGeneratorImpl implements AbonentNumberGenerator {
     public void init() {
         numbers = generateAbonentNumber();
     }
+
 
     public List<String> getNumbers() {
         return numbers;

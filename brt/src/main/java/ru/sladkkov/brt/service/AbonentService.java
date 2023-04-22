@@ -20,7 +20,7 @@ public class AbonentService {
 
     public AbonentDto findAbonentByTelephoneNumber(String telephoneNumber) {
 
-        Abonent abonent = abonentRepository.findAbonentByAbonentNumber(telephoneNumber)
+        Abonent abonent = abonentRepository.findByAbonentNumber(telephoneNumber)
                 .orElseThrow(() -> new AbonentNotFoundException("Пользователя с таким телефоном не найдено"));
 
         var abonentDto = abonentMapper.toDto(abonent);

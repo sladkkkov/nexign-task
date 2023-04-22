@@ -24,16 +24,16 @@ public class ManagerServiceImpl implements ManagerService {
     @Override
     public ChangeTariffDto changeAbonentTariff(ChangeTariffDto changeTariffDto) {
 
-        var tariff = tariffServiceImpl.findTariffById(changeTariffDto.getTariffId());
+        var tariff = tariffServiceImpl.findByTariffId(changeTariffDto.getTariffId());
 
-        var abonent = abonentRepository.findById(changeTariffDto.getTariffId())
+        var abonent = abonentRepository.findByAbonentNumber(changeTariffDto.getAbonentPhone())
                 .orElseThrow(() -> new AbonentNotFoundException("Такого абонента не существует"));
 
         abonent.setTariff(tariff);
 
         abonentRepository.save(abonent);
 
-        changeTariffDto.setTariffId(abonent.getId());
+        changeTariffDto.setId(abonent.getId());
         return changeTariffDto;
     }
 

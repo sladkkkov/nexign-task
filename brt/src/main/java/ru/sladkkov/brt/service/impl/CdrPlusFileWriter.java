@@ -31,7 +31,7 @@ public class CdrPlusFileWriter {
         var tariff = callDataRecordPlusDto.getTariff();
         var callDataRecordDto = callDataRecordPlusDto.getCallDataRecordDto();
 
-        return callDataRecordDto.getTypeCall().getNumericTypeCall() + ", " +
+        return callDataRecordDto.getTypeCall().getCode() + ", " +
                 callDataRecordDto.getAbonentNumber() + ", " +
                 callDataRecordDto.getDateAndTimeStartCall().format(dateTimeFormatter) + ", " +
                 callDataRecordDto.getDateAndTimeEndCall().format(dateTimeFormatter) + ", " +

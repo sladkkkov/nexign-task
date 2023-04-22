@@ -5,5 +5,5 @@ import ru.sladkkov.common.model.Tariff;
 
 @Service
 public interface TariffService {
-    Tariff findTariffById(Long id);
+    Tariff findByTariffId(String tariffId);
 }

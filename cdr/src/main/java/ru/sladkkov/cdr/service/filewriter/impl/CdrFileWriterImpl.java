@@ -33,7 +33,7 @@ public class CdrFileWriterImpl implements CdrFileWriter {
 
     private String cdrFormat(CallDataRecordDto callDataRecordDto) {
 
-        return callDataRecordDto.getTypeCall().getNumericTypeCall() + ", " +
+        return callDataRecordDto.getTypeCall().getCode() + ", " +
                 callDataRecordDto.getAbonentNumber() + ", " +
                 callDataRecordDto.getDateAndTimeStartCall().format(dateTimeFormatter) + ", " +
                 callDataRecordDto.getDateAndTimeEndCall().format(dateTimeFormatter) + '\n';
