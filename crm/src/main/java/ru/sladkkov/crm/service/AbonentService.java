@@ -1,9 +1,9 @@
 package ru.sladkkov.crm.service;
 
 import org.springframework.stereotype.Service;
-import ru.sladkkov.common.model.Payment;
+import ru.sladkkov.common.dto.PaymentDto;
 
 @Service
 public interface AbonentService {
-    Payment pay(Payment payment);
+    PaymentDto pay(PaymentDto payment);
 }

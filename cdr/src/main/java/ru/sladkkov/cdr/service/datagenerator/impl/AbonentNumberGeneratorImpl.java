@@ -11,35 +11,54 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 import ru.sladkkov.cdr.service.datagenerator.AbonentNumberGenerator;
 
+import javax.annotation.PostConstruct;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Component
 @RequiredArgsConstructor
 public class AbonentNumberGeneratorImpl implements AbonentNumberGenerator {
     private static final String RANDOMMER_GET_TELEPHONE_URL = "https://randommer.io/api/Phone/Generate";
-    private final RestTemplate restTemplate;
+
     @Value("${randommer.api.key}")
     private String randommerApiKey;
     @Value("${randommer.api.country_code}")
     private String countryCode;
     @Value("${randommer.api.count}")
     private int countNumber;
+    private final RestTemplate restTemplate;
 
-    private static String formatResponse(ResponseEntity<String> responseEntity) {
+    private List<String> numbers;
+
+    private static List<String> formatResponse(ResponseEntity<String> responseEntity) {
         var body = responseEntity.getBody();
+
         if (body == null) {
             throw new NullPointerException("Body is null");
         }
 
-        return body
+        var split = body
                 .replace("[", "")
                 .replace("]", "")
-                .replace("\"", "");
+                .replace("\"", "")
+                .split(",");
+
+        return List.of(split);
+    }
+
+    @PostConstruct
+    public void init() {
+        numbers = generateAbonentNumber();
+    }
+
+
+    public List<String> getNumbers() {
+        return numbers;
     }
 
     @Override
-    public String generateAbonentNumber() {
+    public List<String> generateAbonentNumber() {
 
         HttpHeaders headers = new HttpHeaders();
         headers.set("X-Api-Key", randommerApiKey);

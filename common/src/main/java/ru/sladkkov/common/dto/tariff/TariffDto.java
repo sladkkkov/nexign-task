@@ -1,4 +1,4 @@
-package ru.sladkkov.common.dto;
+package ru.sladkkov.common.dto.tariff;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -12,12 +12,14 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 @Builder
 public class TariffDto {
-    private Long tariffId;
+    private String tariffId;
     private String name;
     private BigDecimal fixedPrice;
     private Integer freeMinuteForFixedPrice;
     private BigDecimal priceForMinute;
-    private Boolean incomingPaid;
-    private Boolean outgoingPaid;
+    private Integer actionMinute;
+    private BigDecimal actionPrice;
+    private Boolean incomingFree;
+    private Boolean outgoingFree;
     private Boolean freeInsideNetwork;
 }

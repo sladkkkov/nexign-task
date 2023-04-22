@@ -17,12 +17,15 @@ import java.math.BigDecimal;
 public class Tariff {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long tariffId;
+    private String tariffId;
     private String name;
     private BigDecimal fixedPrice;
     private Integer freeMinuteForFixedPrice;
     private BigDecimal priceForMinute;
-    private Boolean incomingPaid;
-    private Boolean outgoingPaid;
+
+    private Integer actionMinute;
+    private BigDecimal actionPrice;
+    private Boolean incomingFree;
+    private Boolean outgoingFree;
     private Boolean freeInsideNetwork;
 }

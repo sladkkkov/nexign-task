@@ -14,8 +14,8 @@ public class TariffServiceImpl implements TariffService {
     private final TariffRepository tariffRepository;
 
     @Override
-    public Tariff findTariffById(Long id) {
-        return tariffRepository.findById(id)
+    public Tariff findByTariffId(String tariffId) {
+        return tariffRepository.findById(tariffId)
                 .orElseThrow(() -> new TariffNotExistsException("Такого тарифа не существует"));
     }
 }

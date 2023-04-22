@@ -18,11 +18,14 @@ public class Abonent {
     private Long id;
 
     @Column(unique = true)
-    private String telephoneNumber;
+    private String abonentNumber;
 
     @ManyToOne
     @JoinColumn(name = "tariff_id")
     private Tariff tariff;
 
+
     private BigDecimal balance;
+
+    private Integer countMinuteByTariffPeriod;
 }

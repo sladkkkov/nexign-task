@@ -12,7 +12,9 @@ spring:
   jpa:
     show-sql: true
     hibernate:
-      ddl-auto: create
+      ddl-auto: update
+  liquibase:
+    enabled: false
 
 eureka:
   client:
@@ -21,5 +23,10 @@ eureka:
 
 server:
   port: 7651
+
+cdr:
+  generate:
+    path: cdr.txt
+    plus-cdr-path: cdr-plus.txt
 
 
