@@ -21,6 +21,10 @@ public class CallInfo {
     @JoinColumn(name = "call_type_id")
     private TypeCall typeCall;
 
+    @ManyToOne(cascade = CascadeType.MERGE)
+    @JoinColumn(name = "abonent_id")
+    private Abonent abonent;
+
     private LocalDateTime startTime;
 
     private LocalDateTime endTime;

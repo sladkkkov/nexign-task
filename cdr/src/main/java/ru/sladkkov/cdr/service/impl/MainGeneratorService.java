@@ -38,7 +38,7 @@ class MainGeneratorService {
         }
     }
 
-    @Scheduled(fixedDelay = 1000)
+    @Scheduled(fixedDelay = 100000)
     public void generateCdrs() throws IOException {
         for (int i = 0; i < countCdr; i++) {
             var callDataRecordDto = cdrGeneratorService.generateCdr();

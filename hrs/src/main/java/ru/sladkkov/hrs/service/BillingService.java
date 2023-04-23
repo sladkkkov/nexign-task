@@ -2,7 +2,7 @@ package ru.sladkkov.hrs.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.kafka.annotation.KafkaListener;
-import org.springframework.kafka.core.KafkaTemplate;
+import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.stereotype.Service;
 import ru.sladkkov.common.dto.CallDataRecordDto;
 import ru.sladkkov.common.dto.CallDataRecordPlusDto;
@@ -18,12 +18,11 @@ import java.time.temporal.ChronoUnit;
 @Service
 @RequiredArgsConstructor
 public class BillingService {
-    private final KafkaTemplate<String, CallInfoDto> kafkaTemplate;
     private final AbonentRepository abonentRepository;
-    private final DataParserService dataParserService;
 
-    @KafkaListener(groupId = "hrs-topic-1", topics = "hrs-topic")
-    public BigDecimal calculatePriceCall(CallDataRecordPlusDto callDataRecordPlusDto) {
+    @KafkaListener(groupId = "hrs-topic-default", topics = "hrs-topic", containerFactory = "kafkaListenerContainerFactory")
+    @SendTo("brt-reply-topic")
+    public CallInfoDto calculatePriceCall(CallDataRecordPlusDto callDataRecordPlusDto) {
         var tariff = callDataRecordPlusDto.getTariff();
         var callDataRecordDto = callDataRecordPlusDto.getCallDataRecordDto();
 
@@ -41,29 +40,26 @@ public class BillingService {
 
         if (Boolean.TRUE.equals(tariff.getIncomingFree()) && callDataRecordDto.getTypeCall().getCode().equals("02")) {
             sendResult(callDataRecordDto, totalDuration, BigDecimal.ZERO);
-            return BigDecimal.ZERO;
+            return sendResult(callDataRecordDto, totalDuration, BigDecimal.ZERO);
         }
 
         if (Boolean.TRUE.equals(tariff.getOutgoingFree()) && callDataRecordDto.getTypeCall().getCode().equals("01")) {
             sendResult(callDataRecordDto, totalDuration, BigDecimal.ZERO);
-            return BigDecimal.ZERO;
+            return sendResult(callDataRecordDto, totalDuration, BigDecimal.ZERO);
         }
 
         if (tariff.getFreeMinuteForFixedPrice() == 0 && tariff.getActionMinute() == 0) {
             var cost = BigDecimal.valueOf(totalDuration.toMinutes()).multiply(tariff.getPriceForMinute());
             sendResult(callDataRecordDto, totalDuration, cost);
-            return cost;
+            return sendResult(callDataRecordDto, totalDuration, cost);
         }
-
-        //TODO сделать звонки внутри сети
 
         if (totalDuration.toMinutes() > tariff.getFreeMinuteForFixedPrice()) {
 
             var val = tariff.getFreeMinuteForFixedPrice() - (countMinuteByTariffPeriod - totalDuration.toMinutes());
             var cost = tariff.getPriceForMinute().multiply(BigDecimal.valueOf(totalDuration.toMinutes() - val));
 
-            sendResult(callDataRecordDto, totalDuration, cost);
-            return cost;
+            return sendResult(callDataRecordDto, totalDuration, cost);
         }
 
         var val = tariff.getActionMinute() - (countMinuteByTariffPeriod - totalDuration.toMinutes());
@@ -76,29 +72,29 @@ public class BillingService {
                         .multiply(BigDecimal.valueOf(val))
                         .add(tariff.getPriceForMinute().multiply(BigDecimal.valueOf(totalDuration.toMinutes() - val)));
 
-                sendResult(callDataRecordDto, totalDuration, cost);
-                return cost;
+                return sendResult(callDataRecordDto, totalDuration, cost);
+
 
             }
             var cost = tariff.getPriceForMinute().multiply(BigDecimal.valueOf(totalDuration.toMinutes()));
-            sendResult(callDataRecordDto, totalDuration, cost);
-            return cost;
+
+            return sendResult(callDataRecordDto, totalDuration, cost);
+
         }
 
         throw new UnsupportedOperationException();
     }
 
-    private void sendResult(CallDataRecordDto callDataRecordDto, Duration totalDuration, BigDecimal cost) {
-
+    private CallInfoDto sendResult(CallDataRecordDto callDataRecordDto, Duration totalDuration, BigDecimal cost) {
         String timeInHHMMSS = getDurationToStringFormat(totalDuration);
 
-        kafkaTemplate.send("brt-db-topic", CallInfoDto.builder()
+        return CallInfoDto.builder()
                 .typeCall(callDataRecordDto.getTypeCall())
                 .cost(cost)
                 .startTime(callDataRecordDto.getDateAndTimeStartCall())
                 .endTime(callDataRecordDto.getDateAndTimeEndCall())
                 .duration(timeInHHMMSS)
-                .build());
+                .build();
     }
 
     private String getDurationToStringFormat(Duration totalDuration) {
@@ -114,4 +110,5 @@ public class BillingService {
                 .truncatedTo(ChronoUnit.MINUTES)
                 .plusMinutes(1);
     }
+
 }

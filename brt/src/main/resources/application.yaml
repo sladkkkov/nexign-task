@@ -29,4 +29,8 @@ cdr:
     path: cdr.txt
     plus-cdr-path: cdr-plus.txt
 
+nexign:
+  send-hrs-topic: hrs-topic
+  reply-topics-brt: brt-reply-topic
+
 
