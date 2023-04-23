@@ -51,6 +51,7 @@ public class KafkaConfig {
         ConcurrentKafkaListenerContainerFactory<String, CallDataRecordPlusDto> concurrentKafkaListenerContainerFactory =
                 new ConcurrentKafkaListenerContainerFactory<>();
 
+        concurrentKafkaListenerContainerFactory.setReplyTemplate(kafkaTemplate());
         concurrentKafkaListenerContainerFactory.setConsumerFactory(consumerFactory());
         concurrentKafkaListenerContainerFactory.setMissingTopicsFatal(false);
         return concurrentKafkaListenerContainerFactory;
@@ -60,4 +61,5 @@ public class KafkaConfig {
     public KafkaTemplate<String, CallInfoDto> kafkaTemplate() {
         return new KafkaTemplate<>(producerFactory());
     }
+
 }
