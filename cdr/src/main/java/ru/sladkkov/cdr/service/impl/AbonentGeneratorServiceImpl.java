@@ -13,18 +13,26 @@ import ru.sladkkov.common.model.Abonent;
 @RequiredArgsConstructor
 public class AbonentGeneratorServiceImpl implements AbonentGeneratorService {
 
+    private static final Integer COUNT_MINUTE_BY_START_TARIFF_PERIOD = 0;
+
     private final AbonentNumberGenerator abonentNumberGenerator;
     private final BalanceGenerator balanceGenerator;
     private final TariffGenerator tariffGenerator;
+
     private int i = 0;
 
+    /**
+     * Метод сборки экземпляра Abonent.
+     *
+     * @return возвращает случайно сгенерированного Абонента {@link Abonent}.
+     */
     @Override
     public Abonent generateAbonent() {
         return Abonent.builder()
                 .abonentNumber(abonentNumberGenerator.getNumbers().get(i++))
-                .tariff(tariffGenerator.generateTariff())
+                .tariff(tariffGenerator.getRandomTariff())
                 .balance(balanceGenerator.generateBalance())
-                .countMinuteByTariffPeriod(0)
+                .countMinuteByTariffPeriod(COUNT_MINUTE_BY_START_TARIFF_PERIOD)
                 .build();
     }
 }

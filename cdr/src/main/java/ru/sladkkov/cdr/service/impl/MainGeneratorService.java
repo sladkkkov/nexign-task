@@ -8,12 +8,8 @@ import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 import ru.sladkkov.cdr.service.AbonentGeneratorService;
 import ru.sladkkov.cdr.service.CdrGeneratorService;
-import ru.sladkkov.cdr.service.filewriter.CdrFileWriter;
 import ru.sladkkov.common.dto.CallDataRecordDto;
 import ru.sladkkov.common.service.ManagerService;
-
-import java.io.IOException;
-
 
 @Service
 @RequiredArgsConstructor
@@ -23,13 +19,16 @@ class MainGeneratorService {
     private int countCdr;
     @Value("${cdr.generate.count.abonent}")
     private int countAbonent;
-    private final CdrFileWriter cdrFileWriter;
+
     private final ManagerService managerService;
     private final AbonentGeneratorService abonentGeneratorService;
     private final CdrGeneratorService cdrGeneratorService;
-
     private final KafkaTemplate<String, CallDataRecordDto> kafkaTemplate;
 
+    /**
+     * Метод генерации Abonent, запускается при старте приложения.
+     * Сохраняет сгенерированного Абонента в БД. {@link ru.sladkkov.common.model.Abonent}.
+     */
     @EventListener(ApplicationReadyEvent.class)
     public void generateAbonents() {
         for (int i = 0; i < countAbonent; i++) {
@@ -37,13 +36,15 @@ class MainGeneratorService {
         }
     }
 
+    /**
+     * Метод генерации Cdr, запускается при старте приложения.
+     * Отправляет в топик Кафки brt-topic, сгенерированную cdr. {@link CallDataRecordDto}.
+     */
     @EventListener(ApplicationReadyEvent.class)
-    public void generateCdrs() throws IOException {
+    public void generateCdrs() {
         for (int i = 0; i < countCdr; i++) {
             var callDataRecordDto = cdrGeneratorService.generateCdr();
             kafkaTemplate.send("brt-topic", callDataRecordDto);
-            cdrFileWriter.writeFile(callDataRecordDto);
         }
     }
 }
-

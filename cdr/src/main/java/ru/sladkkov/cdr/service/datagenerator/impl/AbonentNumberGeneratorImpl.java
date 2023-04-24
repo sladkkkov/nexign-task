@@ -16,20 +16,44 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Класс генерации номеров телефона.
+ *
+ * @author Danila Sladkov
+ */
 @Component
 @RequiredArgsConstructor
 public class AbonentNumberGeneratorImpl implements AbonentNumberGenerator {
-    private static final String RANDOMMER_GET_TELEPHONE_URL = "https://randommer.io/api/Phone/Generate";
 
     @Value("${randommer.api.key}")
     private String randommerApiKey;
+
+    private static final String RANDOMMER_GET_TELEPHONE_URL = "https://randommer.io/api/Phone/Generate";
+    /**
+     * Поле - параметр countryCode для запроса телефонов определенного региона.
+     */
     @Value("${randommer.api.country_code}")
     private String countryCode;
+    /**
+     * Поле - параметр countNumber для запроса, разного количества номеров.
+     */
     @Value("${randommer.api.count}")
     private int countNumber;
     private final RestTemplate restTemplate;
-
+    /**
+     * Поле - хранящее список номеров. Знаю, что плохо хранить состояние, но это необходимо, для генерации Cdr и Abonent,
+     * с совпадением номеров.
+     */
     private List<String> numbers;
+
+    @PostConstruct
+    public void init() {
+        numbers = generateAbonentNumber();
+    }
+
+    public List<String> getNumbers() {
+        return numbers;
+    }
 
     private static List<String> formatResponse(ResponseEntity<String> responseEntity) {
         var body = responseEntity.getBody();
@@ -47,16 +71,12 @@ public class AbonentNumberGeneratorImpl implements AbonentNumberGenerator {
         return List.of(split);
     }
 
-    @PostConstruct
-    public void init() {
-        numbers = generateAbonentNumber();
-    }
-
-
-    public List<String> getNumbers() {
-        return numbers;
-    }
-
+    /**
+     * Метод генерации случайных номеров, который запращивает их по RestTemplate у внешнего API.
+     *
+     * @return возвращает список из случайных номеров.
+     * @throws NullPointerException если произошла ошибка API randommer.io .
+     */
     @Override
     public List<String> generateAbonentNumber() {
 
