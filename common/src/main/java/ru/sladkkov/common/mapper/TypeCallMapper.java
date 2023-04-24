@@ -1,6 +1,8 @@
 package ru.sladkkov.common.mapper;
 
-import org.mapstruct.*;
+import org.mapstruct.Mapper;
+import org.mapstruct.MappingConstants;
+import org.mapstruct.ReportingPolicy;
 import ru.sladkkov.common.dto.TypeCallDto;
 import ru.sladkkov.common.model.TypeCall;
 
@@ -10,6 +12,4 @@ public interface TypeCallMapper {
 
     TypeCallDto toDto(TypeCall typeCall);
 
-    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-    TypeCall partialUpdate(TypeCallDto typeCallDto, @MappingTarget TypeCall typeCall);
 }

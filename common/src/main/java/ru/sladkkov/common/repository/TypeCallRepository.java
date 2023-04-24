@@ -1,4 +1,4 @@
-package ru.sladkkov.brt.repository;
+package ru.sladkkov.common.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import ru.sladkkov.common.model.TypeCall;

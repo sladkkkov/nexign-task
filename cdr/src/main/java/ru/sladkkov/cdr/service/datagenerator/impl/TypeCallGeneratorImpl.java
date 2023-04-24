@@ -3,11 +3,11 @@ package ru.sladkkov.cdr.service.datagenerator.impl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import ru.sladkkov.cdr.exception.TypeCalsIsEmptyException;
-import ru.sladkkov.cdr.repository.TypeCallRepository;
 import ru.sladkkov.cdr.service.datagenerator.TypeCallGenerator;
 import ru.sladkkov.common.dto.TypeCallDto;
 import ru.sladkkov.common.mapper.TypeCallMapper;
 import ru.sladkkov.common.model.TypeCall;
+import ru.sladkkov.common.repository.TypeCallRepository;
 
 import javax.annotation.PostConstruct;
 import java.util.List;
@@ -15,7 +15,6 @@ import java.util.concurrent.ThreadLocalRandom;
 
 /**
  * Класс для случайного выбора типа звонка.
- *
  * @author Danila Sladkov
  */
 @Component

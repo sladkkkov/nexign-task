@@ -1,6 +1,8 @@
 package ru.sladkkov.common.mapper;
 
-import org.mapstruct.*;
+import org.mapstruct.Mapper;
+import org.mapstruct.MappingConstants;
+import org.mapstruct.ReportingPolicy;
 import ru.sladkkov.common.dto.CallInfoDto;
 import ru.sladkkov.common.model.CallInfo;
 
@@ -10,6 +12,4 @@ public interface CallInfoMapper {
 
     CallInfoDto toDto(CallInfo callInfo);
 
-    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-    CallInfo partialUpdate(CallInfoDto callInfoDto, @MappingTarget CallInfo callInfo);
 }

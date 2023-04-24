@@ -38,15 +38,7 @@ public class DataParserService {
                     throw new ParserException("Parser exception for cdrs");
                 }
 
-                callDataRecordDtoList.add(CallDataRecordDto.builder()
-                        .typeCall(TypeCallDto
-                                .builder()
-                                .code(cdr[0])
-                                .build())
-                        .abonentNumber(cdr[1])
-                        .dateAndTimeStartCall(LocalDateTime.parse(cdr[2], dateTimeFormatter))
-                        .dateAndTimeEndCall(LocalDateTime.parse(cdr[3], dateTimeFormatter))
-                        .build());
+                callDataRecordDtoList.add(createCallDataRecordDto(cdr));
             });
 
         } catch (IOException e) {
@@ -54,5 +46,17 @@ public class DataParserService {
         }
 
         return callDataRecordDtoList;
+    }
+
+    private CallDataRecordDto createCallDataRecordDto(String[] cdr) {
+        return CallDataRecordDto.builder()
+                .typeCall(TypeCallDto
+                        .builder()
+                        .code(cdr[0])
+                        .build())
+                .abonentNumber(cdr[1])
+                .dateAndTimeStartCall(LocalDateTime.parse(cdr[2], dateTimeFormatter))
+                .dateAndTimeEndCall(LocalDateTime.parse(cdr[3], dateTimeFormatter))
+                .build();
     }
 }
