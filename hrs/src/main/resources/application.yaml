@@ -21,5 +21,4 @@ server:
 
 cdr:
   generate:
-    path: cdr.txt
     plus-cdr-path: cdr-plus.txt

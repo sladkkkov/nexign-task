@@ -22,7 +22,6 @@ public class Tariff {
     private BigDecimal fixedPrice;
     private Integer freeMinuteForFixedPrice;
     private BigDecimal priceForMinute;
-
     private Integer actionMinute;
     private BigDecimal actionPrice;
     private Boolean incomingFree;

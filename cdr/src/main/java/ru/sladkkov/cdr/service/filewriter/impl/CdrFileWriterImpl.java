@@ -22,7 +22,14 @@ public class CdrFileWriterImpl implements CdrFileWriter {
             .appendPattern("yyyyMMddHHmmss")
             .toFormatter();
 
+    /**
+     * Метод записи Cdr в файл, в нужном формате.
+     *
+     * @param callDataRecordDto которую необходимо записать в файл {@link CallDataRecordDto}\
+     * @deprecated сделал отправку данных через топики кафки
+     */
     @Override
+    @Deprecated()
     public void writeFile(CallDataRecordDto callDataRecordDto) throws IOException {
         try (FileWriter fw = new FileWriter(url, true);
              BufferedWriter bw = new BufferedWriter(fw)) {

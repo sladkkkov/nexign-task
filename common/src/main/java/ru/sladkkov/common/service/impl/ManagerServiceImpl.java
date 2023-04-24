@@ -8,7 +8,6 @@ import ru.sladkkov.common.model.Abonent;
 import ru.sladkkov.common.repository.AbonentRepository;
 import ru.sladkkov.common.service.ManagerService;
 
-
 @Service
 @RequiredArgsConstructor
 public class ManagerServiceImpl implements ManagerService {

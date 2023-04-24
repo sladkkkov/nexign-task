@@ -21,6 +21,11 @@ public class CdrGenerationServiceImpl implements CdrGeneratorService {
     private final AbonentNumberGenerator abonentNumberGenerator;
     private final DateGenerator dateGenerator;
 
+    /**
+     * Метод сборки экземпляра CallDataRecordDto.
+     *
+     * @return возвращает случайно сгенерированного CallDataRecordDto {@link CallDataRecordDto}.
+     */
     @Override
     public CallDataRecordDto generateCdr() {
         var localDateTimeLocalDateTimePair = dateGenerator.generateStartEndCallTimePair();
