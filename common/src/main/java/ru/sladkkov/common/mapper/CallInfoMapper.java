@@ -1,4 +1,4 @@
-package ru.sladkkov.brt.mapper;
+package ru.sladkkov.common.mapper;
 
 import org.mapstruct.*;
 import ru.sladkkov.common.dto.CallInfoDto;
