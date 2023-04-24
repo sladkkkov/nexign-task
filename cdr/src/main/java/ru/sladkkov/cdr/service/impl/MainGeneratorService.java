@@ -5,7 +5,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.kafka.core.KafkaTemplate;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import ru.sladkkov.cdr.service.AbonentGeneratorService;
 import ru.sladkkov.cdr.service.CdrGeneratorService;
@@ -38,7 +37,7 @@ class MainGeneratorService {
         }
     }
 
-    @Scheduled(fixedDelay = 100000)
+    @EventListener(ApplicationReadyEvent.class)
     public void generateCdrs() throws IOException {
         for (int i = 0; i < countCdr; i++) {
             var callDataRecordDto = cdrGeneratorService.generateCdr();

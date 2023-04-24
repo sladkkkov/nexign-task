@@ -12,5 +12,4 @@ public class BrtApplication {
         SpringApplication.run(BrtApplication.class, args);
     }
 
-
 }

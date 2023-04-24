@@ -25,4 +25,5 @@ public class ManagerController {
     public ResponseEntity<AbonentDto> saveAbonent(AbonentDto abonentDto) {
         return ResponseEntity.ok(abonentMapper.toDto(managerServiceImpl.createAbonent(abonentMapper.toEntity(abonentDto))));
     }
+
 }

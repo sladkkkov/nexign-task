@@ -33,7 +33,7 @@ cdr:
     path: cdr.txt
     count:
       abonent: 10
-      cdr: 10
+      cdr: 30
     balance:
       range: 500
 
