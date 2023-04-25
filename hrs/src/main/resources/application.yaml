@@ -22,3 +22,9 @@ server:
 cdr:
   generate:
     plus-cdr-path: cdr-plus.txt
+
+  ordinary:
+    fixed-count-minute: 100
+
+  unlimited:
+    fixed-count-minute: 100

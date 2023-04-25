@@ -24,16 +24,16 @@ server:
 
 call:
   duration:
-    max: 3600
+    max: 1000
 
 cdr:
   generate:
     path: cdr.txt
     count:
       abonent: 10
-      cdr: 30
+      cdr: 100
     balance:
-      range: 500
+      range: 300
 
 randommer:
   api:

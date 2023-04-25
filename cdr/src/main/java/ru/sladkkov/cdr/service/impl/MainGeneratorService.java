@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
+import org.springframework.core.annotation.Order;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 import ru.sladkkov.cdr.service.AbonentGeneratorService;
@@ -30,6 +31,7 @@ class MainGeneratorService {
      * Сохраняет сгенерированного Абонента в БД. {@link ru.sladkkov.common.model.Abonent}.
      */
     @EventListener(ApplicationReadyEvent.class)
+    @Order(1)
     public void generateAbonents() {
         for (int i = 0; i < countAbonent; i++) {
             managerService.createAbonent(abonentGeneratorService.generateAbonent());
@@ -41,6 +43,7 @@ class MainGeneratorService {
      * Отправляет в топик Кафки brt-topic, сгенерированную cdr. {@link CallDataRecordDto}.
      */
     @EventListener(ApplicationReadyEvent.class)
+    @Order(2)
     public void generateCdrs() {
         for (int i = 0; i < countCdr; i++) {
             var callDataRecordDto = cdrGeneratorService.generateCdr();

@@ -14,11 +14,9 @@ import ru.sladkkov.common.model.Abonent;
 public class AbonentGeneratorServiceImpl implements AbonentGeneratorService {
 
     private static final Integer COUNT_MINUTE_BY_START_TARIFF_PERIOD = 0;
-
     private final AbonentNumberGenerator abonentNumberGenerator;
     private final BalanceGenerator balanceGenerator;
     private final TariffGenerator tariffGenerator;
-
     private int i = 0;
 
     /**

@@ -9,6 +9,7 @@ import ru.sladkkov.common.dto.CallDataRecordPlusDto;
 import ru.sladkkov.common.dto.CallInfoDto;
 import ru.sladkkov.common.exception.AbonentNotFoundException;
 import ru.sladkkov.common.repository.AbonentRepository;
+import ru.sladkkov.hrs.tariff.factory.TariffFactory;
 
 import java.math.BigDecimal;
 import java.time.Duration;
@@ -23,7 +24,22 @@ public class BillingService {
     @KafkaListener(groupId = "hrs-topic-default", topics = "hrs-topic", containerFactory = "kafkaListenerContainerFactory")
     @SendTo("brt-reply-topic")
     public CallInfoDto calculatePriceCall(CallDataRecordPlusDto callDataRecordPlusDto) {
-        var tariff = callDataRecordPlusDto.getTariff();
+        var callDataRecordDto = callDataRecordPlusDto.getCallDataRecordDto();
+
+        var tariffId = callDataRecordPlusDto.getTariff();
+        var tariffByTariffId = TariffFactory.createCdr(tariffId.getTariffId());
+
+
+        var totalDuration = calculateDurationCall(callDataRecordDto.getDateAndTimeStartCall(),
+                callDataRecordDto.getDateAndTimeEndCall());
+
+
+        var cost = tariffByTariffId.calculateCallPrice(callDataRecordDto, getTotalDuration(callDataRecordDto));
+
+        return sendResult(callDataRecordDto, totalDuration, cost);
+
+
+    /*    var tariff = callDataRecordPlusDto.getTariff();
         var callDataRecordDto = callDataRecordPlusDto.getCallDataRecordDto();
 
         var abonentByTelephoneNumber = abonentRepository
@@ -32,8 +48,6 @@ public class BillingService {
 
         long countMinuteByTariffPeriod = abonentByTelephoneNumber.getCountMinuteByTariffPeriod();
 
-        var totalDuration = calculateDurationCall(callDataRecordDto.getDateAndTimeStartCall(),
-                callDataRecordDto.getDateAndTimeEndCall());
 
         countMinuteByTariffPeriod += totalDuration.toMinutes();
 
@@ -54,12 +68,16 @@ public class BillingService {
             return sendResult(callDataRecordDto, totalDuration, cost);
         }
 
-        if (totalDuration.toMinutes() > tariff.getFreeMinuteForFixedPrice()) {
+        if (totalDuration.toMinutes() > tariff.getFreeMinuteForFixedPrice() && tariff.getFreeMinuteForFixedPrice() != 0) {
 
             var val = tariff.getFreeMinuteForFixedPrice() - (countMinuteByTariffPeriod - totalDuration.toMinutes());
             var cost = tariff.getPriceForMinute().multiply(BigDecimal.valueOf(totalDuration.toMinutes() - val));
 
             return sendResult(callDataRecordDto, totalDuration, cost);
+        }
+
+        if (tariff.getFreeMinuteForFixedPrice() != 0) {
+            return sendResult(callDataRecordDto, totalDuration, BigDecimal.ZERO);
         }
 
         var val = tariff.getActionMinute() - (countMinuteByTariffPeriod - totalDuration.toMinutes());
@@ -82,10 +100,19 @@ public class BillingService {
 
         }
 
-        throw new UnsupportedOperationException();
+        throw new UnsupportedOperationException();*/
+    }
+
+    private long getTotalDuration(CallDataRecordDto callDataRecordDto) {
+        var abonentByTelephoneNumber = abonentRepository
+                .findByAbonentNumber(callDataRecordDto.getAbonentNumber())
+                .orElseThrow(() -> new AbonentNotFoundException("Такого абонента не существует"));
+
+        return abonentByTelephoneNumber.getCountMinuteByTariffPeriod();
     }
 
     private CallInfoDto sendResult(CallDataRecordDto callDataRecordDto, Duration totalDuration, BigDecimal cost) {
+
         String timeInHHMMSS = getDurationToStringFormat(totalDuration);
 
         return CallInfoDto.builder()

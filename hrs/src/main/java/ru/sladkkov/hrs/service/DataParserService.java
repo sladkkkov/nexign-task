@@ -10,7 +10,6 @@ import ru.sladkkov.common.exception.FileCorruptedException;
 import ru.sladkkov.hrs.exception.CdrParseException;
 
 import java.io.IOException;
-import java.math.BigDecimal;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
@@ -81,14 +80,6 @@ public class DataParserService {
                 TariffDto.builder()
                         .tariffId(cdr[4])
                         .name(cdr[5])
-                        .fixedPrice(new BigDecimal(cdr[6]))
-                        .freeMinuteForFixedPrice(Integer.valueOf(cdr[7]))
-                        .priceForMinute(new BigDecimal(cdr[8]))
-                        .actionMinute(Integer.valueOf(cdr[9]))
-                        .actionPrice(new BigDecimal(cdr[10]))
-                        .incomingFree(Boolean.valueOf(cdr[11]))
-                        .outgoingFree(Boolean.valueOf(cdr[12]))
-                        .freeInsideNetwork(Boolean.valueOf(cdr[13]))
                         .build());
     }
 }
