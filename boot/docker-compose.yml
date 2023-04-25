@@ -1,26 +1,24 @@
 version: "3.9"
 
-networks:
-  kafka-net:
-    name: kafka-net
-    driver: bridge
-
 services:
   nexign-database:
     image: postgres:14.1-alpine
-    restart: always
+    container_name: postgres
+    ports:
+      - "5434:5432"
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
+    networks:
+      - app-net
     volumes:
       - /var/lib/postgresql/data
-    ports:
-      - "5434:5432"
+    restart: always
 
   zookeeper:
     image: zookeeper:3.7.0
     container_name: zookeeper
-    restart: "no"
+    restart: always
     networks:
       - kafka-net
     ports:
@@ -29,7 +27,7 @@ services:
   kafka:
     image: obsidiandynamics/kafka
     container_name: kafka
-    restart: "no"
+    restart: always
     networks:
       - kafka-net
     ports:
@@ -48,7 +46,7 @@ services:
   kafdrop:
     image: obsidiandynamics/kafdrop
     container_name: kafdrop
-    restart: "no"
+    restart: always
     networks:
       - kafka-net
     ports:
@@ -57,6 +55,24 @@ services:
       KAFKA_BROKERCONNECT: "kafka:29092"
     depends_on:
       - "kafka"
+  liquibase:
+    image: liquibase/liquibase:4.17.2
+    networks:
+      - app-net
+    command: liquibase --driver=org.postgresql.Driver --url=jdbc:postgresql://nexign-database:5432/postgres --password=postgres --username=postgres --changelog-file=/boot/db.changelog-master.xml update
+    volumes:
+      - ./liquibase/changelog:/liquibase/boot/changelog
+      - ./liquibase/changelog/db.changelog-master.xml:/liquibase/boot/db.changelog-master.xml
+      - ./liquibase/changelog/changelog-1.0.0.xml:/liquibase/boot/changelog-1.0.0.xml
+      - ./liquibase/changelog/changelog-1.0.1.xml:/liquibase/boot/changelog-1.0.1.xml
+    depends_on:
+      - nexign-database
 
-
+networks:
+  kafka-net:
+    name: kafka-net
+    driver: bridge
+  app-net:
+    name: app-net
+    driver: bridge
 

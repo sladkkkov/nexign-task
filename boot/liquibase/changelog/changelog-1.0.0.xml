@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.9.xsd"
+        objectQuotingStrategy="QUOTE_ONLY_RESERVED_WORDS">
+
+    <changeSet id="1682438002345-1" author="sladk (generated)">
+        <createTable tableName="abonent">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="abonent_pkey"/>
+            </column>
+            <column name="abonent_number" type="VARCHAR(255)"/>
+            <column name="balance" type="numeric(19, 2)"/>
+            <column name="count_minute_by_tariff_period" type="INTEGER"/>
+            <column name="tariff_id" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="1682438002345-2" author="sladk (generated)">
+        <addUniqueConstraint columnNames="abonent_number" constraintName="uk_3blpkhis0pd1w064yc0olxf6m"
+                             tableName="abonent"/>
+    </changeSet>
+    <changeSet id="1682438002345-3" author="sladk (generated)">
+        <createSequence cacheSize="1" cycle="false" dataType="bigint" incrementBy="1" maxValue="9223372036854775807"
+                        minValue="1" sequenceName="hibernate_sequence" startValue="1"/>
+    </changeSet>
+    <changeSet id="1682438002345-4" author="sladk (generated)">
+        <createTable tableName="call_info">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="call_info_pkey"/>
+            </column>
+            <column name="cost" type="numeric(19, 2)"/>
+            <column name="duration" type="VARCHAR(255)"/>
+            <column name="end_time" type="TIMESTAMP WITHOUT TIME ZONE"/>
+            <column name="start_time" type="TIMESTAMP WITHOUT TIME ZONE"/>
+            <column name="abonent_id" type="BIGINT"/>
+            <column name="call_type_id" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="1682438002345-5" author="sladk (generated)">
+        <createTable tableName="monetary_unit">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="monetary_unit_pkey"/>
+            </column>
+            <column name="code" type="VARCHAR(255)"/>
+            <column name="name" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="1682438002345-6" author="sladk (generated)">
+        <createTable tableName="payment">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="payment_pkey"/>
+            </column>
+            <column name="money" type="numeric(19, 2)"/>
+            <column name="abonent_id" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="1682438002345-7" author="sladk (generated)">
+        <createTable tableName="tariff">
+            <column name="tariff_id" type="VARCHAR(255)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="tariff_pkey"/>
+            </column>
+            <column name="name" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="1682438002345-8" author="sladk (generated)">
+        <createTable tableName="type_call">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="type_call_pkey"/>
+            </column>
+            <column name="code" type="VARCHAR(255)"/>
+            <column name="name" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="1682438002345-9" author="sladk (generated)">
+        <addForeignKeyConstraint baseColumnNames="abonent_id" baseTableName="call_info"
+                                 constraintName="fk7duhy6elqpf1u1mjokkjc71h8" onDelete="NO ACTION" onUpdate="NO ACTION"
+                                 referencedColumnNames="id" referencedTableName="abonent"/>
+    </changeSet>
+    <changeSet id="1682438002345-10" author="sladk (generated)">
+        <addForeignKeyConstraint baseColumnNames="call_type_id" baseTableName="call_info"
+                                 constraintName="fk7e1jsijbh4s3jg9f5eknblcp3" onDelete="NO ACTION" onUpdate="NO ACTION"
+                                 referencedColumnNames="id" referencedTableName="type_call"/>
+    </changeSet>
+    <changeSet id="1682438002345-11" author="sladk (generated)">
+        <addForeignKeyConstraint baseColumnNames="tariff_id" baseTableName="abonent"
+                                 constraintName="fk9hdr4rejhhhr71eno9y9a803j" onDelete="NO ACTION" onUpdate="NO ACTION"
+                                 referencedColumnNames="tariff_id" referencedTableName="tariff"/>
+    </changeSet>
+    <changeSet id="1682438002345-12" author="sladk (generated)">
+        <addForeignKeyConstraint baseColumnNames="abonent_id" baseTableName="payment"
+                                 constraintName="fkmq5xgygx9h781ghmn0qpnvcpi" onDelete="NO ACTION" onUpdate="NO ACTION"
+                                 referencedColumnNames="id" referencedTableName="abonent"/>
+    </changeSet>
+
+</databaseChangeLog>
