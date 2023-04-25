@@ -24,3 +24,9 @@ eureka:
 
 server:
   port: 7653
+
+springdoc:
+  api-docs:
+    enabled: false
+  swagger-ui:
+    url: /api-docs.yaml

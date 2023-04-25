@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import ru.sladkkov.common.dto.CallInfoDto;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -17,9 +16,7 @@ public class Report {
     private Long id;
     private String abonentNumber;
     private String tariffIndex;
-
-    private List<CallInfoDto> payments;
-
-    private BigDecimal tootalCost;
-    private String monetartUnit;
+    private List<CallDto> payments;
+    private BigDecimal totalCost;
+    private String monetaryUnit;
 }

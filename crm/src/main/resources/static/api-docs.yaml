@@ -1,0 +1,300 @@
+openapi: 3.0.3
+info:
+  title: Nexign Bootcamp Task
+  description: Тестовое задание
+  contact:
+    email: sladkkov@yandex.ru
+  version: 0.0.1
+servers:
+  - url: http://localhost/api/v1
+tags:
+  - name: abonent
+    description: В этом разделе находятся методы взаимодействия абонента с системой
+  - name: manager
+    description: В этом разделе находятся методы взаимодействия менеджера с системой
+paths:
+  /abonent/pay:
+    patch:
+      tags:
+        - abonent
+      summary: Пополнение баланса абонентом
+      description: Абонент пополняет свой счет
+      operationId: abonentPay
+      requestBody:
+        description: >-
+          В теле запроса обязательно должен быть номер абонента и сумма, на
+          которую абонент планирует пополнить баланс
+        content:
+          application/json:
+            schema:
+              required:
+                - abonentPhone
+                - money
+              type: object
+              properties:
+                phoneNumber:
+                  type: string
+                  example: +7 936 843-04-58
+                money:
+                  type: number
+                  format: int64
+                  example: 1222
+        required: true
+      responses:
+        '200':
+          description: Успешное пополнение баланса
+          content:
+            application/json:
+              schema:
+                required:
+                  - id
+                  - phoneNumber
+                  - balance
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    format: int64
+                    example: 10
+                  phoneNumber:
+                    type: string
+                    example: +7 936 843-04-58
+                  balance:
+                    type: number
+                    format: int64
+                    example: 800
+  /abonent/report/{abonentNumber}:
+    get:
+      tags:
+        - abonent
+      summary: Получение детализации по номеру телефона
+      description: Абонент получает детализацию по счёту за тарифный период
+      operationId: abonentReport
+      parameters:
+        - name: abonentNumber
+          in: path
+          required: true
+          schema:
+            type: string
+            example: +7 936 843-04-58
+      responses:
+        '200':
+          description: Детализация успешно получена
+          content:
+            application/json:
+              examples:
+                '1':
+                  value: |-
+                    {
+                          "id": 8,
+                          "abonentNumber": "+7 989 272-21-47",
+                          "tariffIndex": "11",
+                          "payments": [
+                                {
+                                      "typeCall": "01",
+                                      "startTime": "2023-04-24T04:08:36.521607",
+                                      "endTime": "2023-04-24T04:24:35.522114",
+                                      "duration": "00:16:00",
+                                      "cost": 8.00
+                                },
+                                {
+                                      "typeCall": "02",
+                                      "startTime": "2023-04-24T04:08:36.526975",
+                                      "endTime": "2023-04-24T04:17:08.526975",
+                                      "duration": "00:09:00",
+                                      "cost": 0.00
+                                }
+                          ],
+                          "totalCost": 8.00,
+                          "monetaryUnit": "RU"
+                    }
+                '2':
+                  value: |-
+                    {
+                          "id": 1,
+                          "abonentNumber": "+7 986 490-60-18",
+                          "tariffIndex": "06",
+                          "payments": [
+                                {
+                                      "typeCall": "02",
+                                      "startTime": "2023-04-24T04:08:36.523965",
+                                      "endTime": "2023-04-24T04:47:50.523965",
+                                      "duration": "00:40:00",
+                                      "cost": 40.00
+                                },
+                                {
+                                      "typeCall": "01",
+                                      "startTime": "2023-04-24T04:08:36.536728",
+                                      "endTime": "2023-04-24T05:05:09.536728",
+                                      "duration": "00:57:00",
+                                      "cost": 57.00
+                                },
+                                {
+                                      "typeCall": "01",
+                                      "startTime": "2023-04-24T04:08:36.558666",
+                                      "endTime": "2023-04-24T04:47:11.558666",
+                                      "duration": "00:39:00",
+                                      "cost": 39.00
+                                },
+                                {
+                                      "typeCall": "02",
+                                      "startTime": "2023-04-24T04:08:36.563462",
+                                      "endTime": "2023-04-24T04:58:46.56392",
+                                      "duration": "00:51:00",
+                                      "cost": 51.00
+                                },
+                                {
+                                      "typeCall": "02",
+                                      "startTime": "2023-04-24T04:08:36.564885",
+                                      "endTime": "2023-04-24T04:17:52.564885",
+                                      "duration": "00:10:00",
+                                      "cost": 10.00
+                                }
+                          ],
+                          "totalCost": 197.00,
+                          "monetaryUnit": "RU"
+                    }
+  /manager/abonent:
+    post:
+      tags:
+        - manager
+      summary: Менеджер создаёт нового абонента
+      description: Менеджер создаёт нового абонента
+      operationId: managerAbonent
+      requestBody:
+        description: >-
+          В теле запроса обязательно должен быть номер абонента и сумма, на
+          которую абонент планирует пополнить баланс
+        content:
+          application/json:
+            schema:
+              required:
+                - abonentPhone
+                - tarrif
+              type: object
+              properties:
+                abonentPhone:
+                  type: integer
+                  example: +7 989 272-21-47
+                tarrif:
+                  type: string
+                  example: '03'
+                balance:
+                  type: integer
+                  example: 300
+        required: true
+      responses:
+        '200':
+          description: Успешное создание абонента
+          content:
+            application/json:
+              schema:
+                required:
+                  - id
+                  - phoneNumber
+                  - tarrif
+                  - balance
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    format: int64
+                    example: 10
+                  phoneNumber:
+                    type: integer
+                    format: int64
+                    example: +7 989 272-21-47
+                  tarrif:
+                    type: string
+                    example: '03'
+                  balance:
+                    type: integer
+                    format: int64
+                    example: 300
+
+  /manager/changeTariff:
+    patch:
+      tags:
+        - manager
+      summary: Менеджер изменяет свой тариф на один из существующих
+      operationId: changeTariff
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+                - abonentPhone
+                - tariffId
+              type: object
+              properties:
+                abonentPhone:
+                  type: integer
+                  example: +7 956 589-37-98
+                tarrif:
+                  type: string
+                  example: '11'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              examples:
+                '1':
+                  value: |-
+                    {
+                          "id": 4,
+                          "abonentPhone": "+7 990 998-35-03",
+                          "tariffId": "11"
+                    }
+components:
+  schemas:
+    ChangeTariffDto:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        abonentPhone:
+          type: string
+        tariffId:
+          type: string
+
+    PaymentDto:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        abonentPhone:
+          type: string
+        money:
+          type: integer
+
+    TypeCall:
+      type: object
+      properties:
+        code:
+          type: string
+        abonentPhone:
+          type: string
+        name:
+          type: string
+
+    CallInfoDto:
+      type: object
+      properties:
+        typeCall:
+          type: string
+        abonent:
+          type: string
+        startTime:
+          type: string
+          format: date-time
+        endTime:
+          type: string
+          format: date-time
+        duration:
+          type: string
+        cost:
+          type: integer

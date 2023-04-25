@@ -8,6 +8,7 @@ import ru.sladkkov.cdr.service.datagenerator.AbonentNumberGenerator;
 import ru.sladkkov.cdr.service.datagenerator.DateGenerator;
 import ru.sladkkov.cdr.service.datagenerator.TypeCallGenerator;
 import ru.sladkkov.common.dto.CallDataRecordDto;
+import ru.sladkkov.common.repository.AbonentRepository;
 
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -20,6 +21,7 @@ public class CdrGenerationServiceImpl implements CdrGeneratorService {
     private final TypeCallGenerator typeCallGenerator;
     private final AbonentNumberGenerator abonentNumberGenerator;
     private final DateGenerator dateGenerator;
+    private final AbonentRepository abonentRepository;
 
     /**
      * Метод сборки экземпляра CallDataRecordDto.
@@ -31,7 +33,10 @@ public class CdrGenerationServiceImpl implements CdrGeneratorService {
         var localDateTimeLocalDateTimePair = dateGenerator.generateStartEndCallTimePair();
         return CallDataRecordDto.builder()
                 .typeCall(typeCallGenerator.generateTypeCall())
+                .abonentNumber(abonentRepository.findAll().get(ThreadLocalRandom.current().nextInt(countNumber)).getAbonentNumber())
+/*
                 .abonentNumber(abonentNumberGenerator.getNumbers().get(ThreadLocalRandom.current().nextInt(countNumber)))
+*/
                 .dateAndTimeStartCall(localDateTimeLocalDateTimePair.getFirst())
                 .dateAndTimeEndCall(localDateTimeLocalDateTimePair.getSecond())
                 .build();

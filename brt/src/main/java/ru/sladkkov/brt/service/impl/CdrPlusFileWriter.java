@@ -36,15 +36,7 @@ public class CdrPlusFileWriter {
                 callDataRecordDto.getDateAndTimeStartCall().format(dateTimeFormatter) + ", " +
                 callDataRecordDto.getDateAndTimeEndCall().format(dateTimeFormatter) + ", " +
                 tariff.getTariffId() + ", " +
-                tariff.getName() + ", " +
-                tariff.getFixedPrice() + ", " +
-                tariff.getFreeMinuteForFixedPrice() + ", " +
-                tariff.getPriceForMinute() + ", " +
-                tariff.getActionMinute() + ", " +
-                tariff.getActionPrice() + ", " +
-                tariff.getIncomingFree() + ", " +
-                tariff.getOutgoingFree() + ", " +
-                tariff.getFreeInsideNetwork() + '\n';
+                tariff.getName() + '\n';
 
     }
 }
