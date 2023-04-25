@@ -8,6 +8,6 @@ import java.math.BigDecimal;
 public class XTariff implements Tariffable {
     @Override
     public BigDecimal calculateCallPrice(CallDataRecordDto callDataRecordDto, Long sumTotalDuration) {
-        return BigDecimal.ZERO;
+        return BigDecimal.ONE;
     }
 }
