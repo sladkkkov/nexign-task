@@ -7,10 +7,11 @@
         <groupId>ru.sladkkov</groupId>
         <artifactId>nexign-task</artifactId>
         <version>1.0-SNAPSHOT</version>
+        <relativePath>../pom.xml</relativePath>
     </parent>
 
     <artifactId>cdr</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>1.0-SNAPSHOT</version>
     <name>cdr</name>
     <description>cdr</description>
 
@@ -38,20 +39,19 @@
         </dependency>
 
         <dependency>
-            <groupId>ru.sladkkov</groupId>
-            <artifactId>common</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
-            <scope>compile</scope>
-        </dependency>
-
-        <dependency>
             <groupId>org.springframework.kafka</groupId>
             <artifactId>spring-kafka</artifactId>
         </dependency>
+
         <dependency>
             <groupId>com.networknt</groupId>
             <artifactId>openapi-parser</artifactId>
             <version>2.1.8</version>
+        </dependency>
+        <dependency>
+            <groupId>ru.sladkkov</groupId>
+            <artifactId>common</artifactId>
+            <version>1.1-SNAPSHOT</version>
         </dependency>
     </dependencies>
 

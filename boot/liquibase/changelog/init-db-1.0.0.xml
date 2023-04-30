@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.9.xsd">
+    <changeSet id="insert-tariff" author="sladkkov">
+        <insert tableName="tariff">
+            <column name="tariff_id" value="06"/>
+            <column name="name" value="Безлимит"/>
+        </insert>
+
+        <insert tableName="tariff">
+            <column name="tariff_id" value="03"/>
+            <column name="name" value="Поминутный"/>
+        </insert>
+
+        <insert tableName="tariff">
+            <column name="tariff_id" value="82"/>
+            <column name="name" value="X"/>
+        </insert>
+
+        <insert tableName="tariff">
+            <column name="tariff_id" value="11"/>
+            <column name="name" value="Обычный"/>
+        </insert>
+    </changeSet>
+
+    <changeSet id="insert-type-call" author="sladkkov">
+        <insert tableName="type_call">
+            <column name="id" value="1"/>
+            <column name="code" value="01"/>
+            <column name="name" value="OUTGOING"/>
+        </insert>
+
+        <insert tableName="type_call">
+            <column name="id" value="2"/>
+            <column name="code" value="02"/>
+            <column name="name" value="INCOMING"/>
+        </insert>
+    </changeSet>
+
+    <changeSet id="insert-type-call" author="sladkkov">
+        <insert tableName="type_call">
+            <column name="id" value="1"/>
+            <column name="code" value="01"/>
+            <column name="name" value="OUTGOING"/>
+        </insert>
+
+        <insert tableName="type_call">
+            <column name="id" value="2"/>
+            <column name="code" value="02"/>
+            <column name="name" value="INCOMING"/>
+        </insert>
+    </changeSet>
+
+    <changeSet id="insert-monetary-unit" author="sladkkov">
+        <insert tableName="monetary_unit">
+            <column name="id" value="1"/>
+            <column name="code" value="RU"/>
+            <column name="name" value="rubles"/>
+        </insert>
+
+        <insert tableName="monetary_unit">
+            <column name="id" value="2"/>
+            <column name="code" value="USD"/>
+            <column name="name" value="dollars"/>
+        </insert>
+    </changeSet>
+</databaseChangeLog>
