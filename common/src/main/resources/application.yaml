@@ -4,10 +4,10 @@ spring:
 
   datasource:
     driver-class-name: org.postgresql.Driver
-    name: nexign
-    url: jdbc:postgresql://localhost:5434/nexign
-    username: postgres
-    password: postgres
+    name: ${POSTGRES_DATABASE}
+    url: ${POSTGRES_URL}
+    username:  ${POSTGRES_USER}
+    password: ${POSTGRES_PASSWORD}
 
   jpa:
     show-sql: true
@@ -15,4 +15,6 @@ spring:
       ddl-auto: update
   liquibase:
     enabled: false
+server:
+  port: 8766
 

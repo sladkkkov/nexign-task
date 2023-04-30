@@ -4,20 +4,25 @@ spring:
 
   datasource:
     driver-class-name: org.postgresql.Driver
-    name: nexign
-    url: jdbc:postgresql://localhost:5434/nexign
-    username: postgres
-    password: postgres
+    name: ${POSTGRES_DATABASE}
+    url: ${POSTGRES_URL}
+    username:  ${POSTGRES_USER}
+    password: ${POSTGRES_PASSWORD}
+
+
 
   jpa:
     show-sql: true
     hibernate:
       ddl-auto: update
 
+kafka:
+  url: ${BOOTSTRAP_SERVERS_CONFIG}
+
 eureka:
   client:
     serviceUrl:
-      defaultZone: http://localhost:8761/eureka
+      defaultZone: ${EUREKA_SERVER}
 
 server:
   port: 7652

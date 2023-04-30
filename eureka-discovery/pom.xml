@@ -10,7 +10,7 @@
     </parent>
 
     <artifactId>eureka-discovery</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>1.0-SNAPSHOT</version>
     <name>eureka-discovery</name>
     <description>eureka-discovery</description>
 

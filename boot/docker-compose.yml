@@ -2,18 +2,40 @@ version: "3.9"
 
 services:
   nexign-database:
-    image: postgres:14.1-alpine
-    container_name: postgres
+    image: postgres:14-alpine
+    container_name: nexign-database
     ports:
-      - "5434:5432"
+      - "5432:5432"
     environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
+      POSTGRES_USER: "postgres"
+      POSTGRES_PASSWORD: "postgres"
+      POSTGRES_DB: "postgres"
+    healthcheck:
+      test: [ "CMD", "pg_isready","-d","postgres","-U","postgres" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
     networks:
       - app-net
     volumes:
       - /var/lib/postgresql/data
     restart: always
+
+  liquibase:
+    image: liquibase/liquibase:4.17.2
+    networks:
+      - app-net
+    command: liquibase --driver=org.postgresql.Driver --url=jdbc:postgresql://nexign-database:5432/postgres --password=postgres --username=postgres --changelog-file=/boot/db.changelog-master.xml update
+    volumes:
+      - ./liquibase/changelog:/liquibase/boot/changelog
+      - ./liquibase/changelog/db.changelog-master.xml:/liquibase/boot/db.changelog-master.xml
+      - ./liquibase/changelog/create-tariff-1.0.2.xml:/liquibase/boot/create-tariff-1.0.2.xml
+      - ./liquibase/changelog/init-db-1.0.0.xml:/liquibase/boot/init-db-1.0.0.xml
+      - ./liquibase/changelog/create-security-table-1.0.3.xml:/liquibase/boot/create-security-table-1.0.3.xml
+      - ./liquibase/changelog/create-user-1.0.4.xml:/liquibase/boot/create-user-1.0.4.xml
+    depends_on:
+      nexign-database:
+        condition: service_healthy
 
   zookeeper:
     image: zookeeper:3.7.0
@@ -54,19 +76,129 @@ services:
     environment:
       KAFKA_BROKERCONNECT: "kafka:29092"
     depends_on:
-      - "kafka"
-  liquibase:
-    image: liquibase/liquibase:4.17.2
+      - kafka
+
+
+  common:
+    image:  common:2.0.1
+    restart: always
+    container_name: common
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DATABASE=postgres
+      - POSTGRES_URL=jdbc:postgresql://nexign-database:5432/postgres
+    ports:
+      - "8767:8767"
     networks:
       - app-net
-    command: liquibase --driver=org.postgresql.Driver --url=jdbc:postgresql://nexign-database:5432/postgres --password=postgres --username=postgres --changelog-file=/boot/db.changelog-master.xml update
-    volumes:
-      - ./liquibase/changelog:/liquibase/boot/changelog
-      - ./liquibase/changelog/db.changelog-master.xml:/liquibase/boot/db.changelog-master.xml
-      - ./liquibase/changelog/changelog-1.0.0.xml:/liquibase/boot/changelog-1.0.0.xml
-      - ./liquibase/changelog/changelog-1.0.1.xml:/liquibase/boot/changelog-1.0.1.xml
     depends_on:
-      - nexign-database
+      nexign-database:
+        condition: service_healthy
+      eureka:
+        condition: service_started
+
+  cdr:
+    image:  cdr:2.0.1
+    restart: always
+    container_name: cdr
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DATABASE: postgres
+      POSTGRES_URL: jdbc:postgresql://nexign-database:5432/postgres
+      EUREKA_SERVER: http://eureka:8761/eureka
+      BOOTSTRAP_SERVERS_CONFIG: kafka:29092
+    ports:
+      - "7652:7652"
+    networks:
+      - app-net
+      - kafka-net
+    depends_on:
+      nexign-database:
+        condition: service_healthy
+      eureka:
+        condition: service_started
+      kafka:
+        condition: service_started
+
+  brt:
+    image:  brt:2.0.1
+    restart: always
+    container_name: brt
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DATABASE: postgres
+      POSTGRES_URL: jdbc:postgresql://nexign-database:5432/postgres
+      EUREKA_SERVER: http://eureka:8761/eureka
+      BOOTSTRAP_SERVERS_CONFIG: kafka:29092
+    ports:
+      - "7651:7651"
+    networks:
+      - app-net
+      - kafka-net
+    depends_on:
+      nexign-database:
+        condition: service_healthy
+      eureka:
+        condition: service_started
+      kafka:
+        condition: service_started
+
+  hrs:
+    image: hrs:2.0.1
+    restart: always
+    container_name: hrs
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DATABASE: postgres
+      POSTGRES_URL: jdbc:postgresql://nexign-database:5432/postgres
+      EUREKA_SERVER: http://eureka:8761/eureka
+      BOOTSTRAP_SERVERS_CONFIG: kafka:29092
+    ports:
+      - "7654:7654"
+    networks:
+      - app-net
+      - kafka-net
+    depends_on:
+      nexign-database:
+        condition: service_healthy
+      eureka:
+        condition: service_started
+      kafka:
+        condition: service_started
+
+  crm:
+    image:  crm:2.0.1
+    restart: always
+    container_name: crm
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DATABASE: postgres
+      POSTGRES_URL: jdbc:postgresql://nexign-database:5432/postgres
+      EUREKA_SERVER: http://eureka:8761/eureka/
+    ports:
+      - "7653:7653"
+    networks:
+      - app-net
+      - kafka-net
+    depends_on:
+      nexign-database:
+        condition: service_healthy
+      eureka:
+        condition: service_started
+
+  eureka:
+    image: eureka:2.0.1
+    restart: always
+    container_name: eureka
+    ports:
+      - "8761:8761"
+    networks:
+      - app-net
 
 networks:
   kafka-net:
