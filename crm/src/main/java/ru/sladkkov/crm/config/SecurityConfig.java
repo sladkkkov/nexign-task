@@ -59,6 +59,7 @@ public class SecurityConfig {
                 .authorizeRequests()
                 .antMatchers("api/v1/login").permitAll()
                 .antMatchers("api/v1/register").permitAll()
+                .antMatchers("swagger-ui").permitAll()
                 .antMatchers("api/v1/abonent/**").hasRole("USER")
                 .antMatchers("api/v1/manager/**").hasRole("ADMIN")
                 .and()

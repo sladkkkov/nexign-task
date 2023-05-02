@@ -12,9 +12,9 @@ public class RegisterRequest {
     private String password;
 
     @JsonProperty("first_name")
-    private String firstName;
+    private String firstname;
 
     @JsonProperty("last_name")
-    private String lastName;
+    private String lastname;
 
 }

@@ -2,7 +2,6 @@ package ru.sladkkov.crm.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import ru.sladkkov.crm.dto.request.LoginRequest;
 import ru.sladkkov.crm.dto.response.JwtResponse;
@@ -24,9 +23,4 @@ public class AuthenticationController {
         return ResponseEntity.ok(authenticationService.login(loginRequest));
     }
 
-    @PreAuthorize("hasAnyAuthority('ADMIN')")
-    @GetMapping("/admin/1")
-    public ResponseEntity<String> getString() {
-        return ResponseEntity.ok("Проверка преАвторайза ");
-    }
 }

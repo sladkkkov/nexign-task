@@ -32,7 +32,7 @@ public class RegistrationService {
 
     public void registration(RegisterRequest registerRequest) throws RoleNotFoundException {
         log.info("Users with username: " + registerRequest.getUsername() + " start registration");
-        Users users = new Users(registerRequest.getUsername(), encodePassword(registerRequest), registerRequest.getFirstName(), registerRequest.getLastName());
+        Users users = new Users(registerRequest.getUsername(), encodePassword(registerRequest), registerRequest.getFirstname(), registerRequest.getLastname());
 
         if (userRepository.findByUsername(registerRequest.getUsername()).isEmpty()) {
             setUserRole(users);

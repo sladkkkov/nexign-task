@@ -78,28 +78,8 @@ services:
     depends_on:
       - kafka
 
-
-  common:
-    image:  common:2.0.1
-    restart: always
-    container_name: common
-    environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
-      - POSTGRES_DATABASE=postgres
-      - POSTGRES_URL=jdbc:postgresql://nexign-database:5432/postgres
-    ports:
-      - "8767:8767"
-    networks:
-      - app-net
-    depends_on:
-      nexign-database:
-        condition: service_healthy
-      eureka:
-        condition: service_started
-
   cdr:
-    image:  cdr:2.0.1
+    image:  sladkkov/cdr:2.0.3
     restart: always
     container_name: cdr
     environment:
@@ -123,7 +103,7 @@ services:
         condition: service_started
 
   brt:
-    image:  brt:2.0.1
+    image:  sladkkov/brt:2.0.3
     restart: always
     container_name: brt
     environment:
@@ -147,7 +127,7 @@ services:
         condition: service_started
 
   hrs:
-    image: hrs:2.0.1
+    image: sladkkov/hrs:2.0.3
     restart: always
     container_name: hrs
     environment:
@@ -171,7 +151,7 @@ services:
         condition: service_started
 
   crm:
-    image:  crm:2.0.1
+    image:  sladkkov/crm:2.0.3
     restart: always
     container_name: crm
     environment:
@@ -192,7 +172,7 @@ services:
         condition: service_started
 
   eureka:
-    image: eureka:2.0.1
+    image: sladkkov/eureka:2.0.2
     restart: always
     container_name: eureka
     ports:

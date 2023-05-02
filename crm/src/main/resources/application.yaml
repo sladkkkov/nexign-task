@@ -23,7 +23,7 @@ eureka:
       defaultZone: ${EUREKA_SERVER}
 
 server:
-  port: 7643
+  port: 7653
 
 jwt:
   token:

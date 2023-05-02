@@ -28,5 +28,36 @@
             <column name="user_id" value="1"/>
             <column name="role_id" value="1"/>
         </insert>
+
+
+        <insert tableName="users">
+            <column name="first_name" value="admin"/>
+            <column name="last_name" value="admin"/>
+            <column name="password" value="$2a$10$umDeGwOiZOSjdaGdG0XYkOSOYsqLC09tOoVuH.j0g2Dj0oBQbNBde"/>
+            <column name="username" value="admin"/>
+        </insert>
+
+        <insert tableName="user_roles">
+            <column name="user_id" value="2"/>
+            <column name="role_id" value="2"/>
+        </insert>
+
+        <insert tableName="user_roles">
+            <column name="user_id" value="2"/>
+            <column name="role_id" value="1"/>
+        </insert>
+
+        <insert tableName="users">
+            <column name="first_name" value="user"/>
+            <column name="last_name" value="user"/>
+            <column name="password" value="$2a$10$XA/9yc9EI.ryAyE6eKPBU.GikNcE6mnFGRy9TwqYgqOeYx1j0EEA2"/>
+            <column name="username" value="user"/>
+        </insert>
+
+        <insert tableName="user_roles">
+            <column name="user_id" value="2"/>
+            <column name="role_id" value="2"/>
+        </insert>
+
     </changeSet>
 </databaseChangeLog>

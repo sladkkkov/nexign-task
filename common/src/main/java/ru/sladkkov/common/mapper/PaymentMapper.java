@@ -6,6 +6,7 @@ import org.mapstruct.ReportingPolicy;
 import ru.sladkkov.common.dto.PaymentDto;
 import ru.sladkkov.common.model.Payment;
 
+
 @Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE, componentModel = MappingConstants.ComponentModel.SPRING)
 public interface PaymentMapper {
     Payment toEntity(PaymentDto paymentDto);

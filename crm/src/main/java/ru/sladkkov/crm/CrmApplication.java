@@ -10,7 +10,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 
 @SpringBootApplication
 @EnableWebSecurity
-@EntityScan("ru.sladkkov.common.model")
+@EntityScan(basePackages = {"ru.sladkkov.common.model", "ru.sladkkov.crm.model"})
 @ComponentScan(basePackages = {"ru.sladkkov.common", "ru.sladkkov.crm"})
 public class CrmApplication {
 

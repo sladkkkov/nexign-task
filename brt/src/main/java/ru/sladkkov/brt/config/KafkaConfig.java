@@ -16,9 +16,9 @@ import org.springframework.kafka.support.serializer.JsonSerializer;
 import ru.sladkkov.common.dto.CallDataRecordPlusDto;
 import ru.sladkkov.common.dto.CallInfoDto;
 
-
 import java.util.HashMap;
 import java.util.Map;
+
 
 @Configuration
 public class KafkaConfig {
