@@ -18,6 +18,19 @@ import ru.sladkkov.crm.security.jwt.ConfigurerFilter;
 @Configuration
 public class SecurityConfig {
 
+    private static final String[] AUTH_WHITELIST = {
+            "/v2/api-docs",
+            "/swagger-resources",
+            "/swagger-resources/**",
+            "/configuration/ui",
+            "/configuration/security",
+            "/swagger-ui.html",
+            "/webjars/**",
+
+            "/v3/api-docs/**",
+            "/swagger-ui/**"
+    };
+
     private final UserDetailsServiceImpl userDetailsService;
 
 
@@ -59,8 +72,7 @@ public class SecurityConfig {
                 .authorizeRequests()
                 .antMatchers("api/v1/login").permitAll()
                 .antMatchers("api/v1/register").permitAll()
-                .antMatchers("swagger-ui").permitAll()
-                .antMatchers("api/v1/abonent/**").hasRole("USER")
+                .antMatchers(AUTH_WHITELIST).permitAll()                .antMatchers("api/v1/abonent/**").hasRole("USER")
                 .antMatchers("api/v1/manager/**").hasRole("ADMIN")
                 .and()
                 .apply(configurerFilter);

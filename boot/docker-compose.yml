@@ -151,7 +151,7 @@ services:
         condition: service_started
 
   crm:
-    image:  sladkkov/crm:2.0.3
+    image:  sladkkov/crm:2.0.5
     restart: always
     container_name: crm
     environment:
